@@ -48,10 +48,20 @@ async function selectRecruitById(connection, recruitIdx) {
     return recruitRows;
 }
 
+// 지원하기 
+async function insertApply(connection, insertApplyParams) {
+    const insertApplyQuery = `
+    INSERT INTO APPLY(recruitIdx, userIdx, title, content) VALUES (?, ?, ?, ?);
+    `;
+    const [ApplyRows] = await connection.query(insertApplyQuery, insertApplyParams);
+    return ApplyRows;
+}
+
 module.exports = {
     insertRecruit,
     insertRecruitPosition,
     selectRecruit,
     selectRecruitPosition,
-    selectRecruitById
+    selectRecruitById,
+    insertApply
 }

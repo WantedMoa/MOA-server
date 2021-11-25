@@ -12,4 +12,7 @@ module.exports = function(app) {
     // 모집 공고 등록 API
     app.post("/app/recruits", jwtMiddleware, upload.single('image'), com.writeRecruitPost);
 
+    // 지원하기 API
+    app.post("/app/recruits/:recruitId/apply", jwtMiddleware, com.postApply)
+
 }

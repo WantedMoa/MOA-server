@@ -73,3 +73,12 @@ exports.writeRecruitPost = async function(req, res) {
 
     return res.send(writeRecruitResponse);
 };
+
+exports.postApply = async function(req, res) {
+    const userIdFromJWT = req.verifiedToken.userIdx;
+    const recruitIdx = req.params.recruitId;
+    const { title, content } = req.body;
+
+    const ApplyResponse = await comService.createApply(recruitIdx, userIdFromJWT, title, content);
+    return res.send(ApplyResponse);
+}
