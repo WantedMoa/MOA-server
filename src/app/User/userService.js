@@ -114,7 +114,7 @@ exports.postSignIn = async function(email, password) {
 
         //토큰 생성 Service
         let token = await jwt.sign({
-                userIdx: userInfoRows[0].idx,
+                userIdx: userInfoRows[0].userIdx,
             }, // 토큰의 내용(payload)
             secret_config.jwtsecret, // 비밀키
             {
