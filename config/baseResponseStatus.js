@@ -38,6 +38,10 @@ module.exports = {
 
     RECRUIT_IDX_EMPTY : { "isSuccess": false, "code": 2501, "message": "모집공고 idx를 입력해주세요" },
 
+    USER_IDX_REVIEW_EMPTY : { "isSuccess": false, "code": 2530, "message":"리뷰 할 멤버의 인덱스를 입력해주세요" },
+    REVIEW_RATE_EMPTY : { "isSuccess": false, "code": 2531, "message":"리뷰 점수를 입력해주세요" },
+    REVIEW_EMPTY : { "isSuccess": false, "code": 2532, "message":"리뷰 내용을 입력해주세요" },
+
     // Response error
     SIGNUP_REDUNDANT_EMAIL: { "isSuccess": false, "code": 3001, "message": "중복된 이메일입니다." },
     SIGNUP_REDUNDANT_NICKNAME: { "isSuccess": false, "code": 3002, "message": "중복된 닉네임입니다." },
@@ -54,6 +58,11 @@ module.exports = {
 
     RECRUIT_EMPTY : { "isSuccess": false, "code": 3501, "message":"등록한 공고가 없습니다." },
     RECOMMEND_EMPTY : { "isSuccess": false, "code": 3510, "message":"모집 공고에 맞는 추천 유저가 없습니다." },
+
+    TEAM_EMPTY : { "isSuccess": false, "code": 3520, "message":"나의 팀이 없습니다." },
+    TEAM_REVIEW_ERROR : { "isSuccess": false, "code": 3530, "message":"리뷰 작성 권한이 없는 멤버 입니다." },
+    TEAM_REVIEW_ALREADY : { "isSuccess": false, "code": 3531, "message":"이미 리뷰를 작성한 멤버 입니다." },
+
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR: { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러" },

@@ -24,6 +24,7 @@ module.exports = function() {
 
     require('../src/app/Home/homeRoute')(app);
     require('../src/app/Recommend/recommendRoute')(app);
+    require('../src/app/MyPage/myPageRoute')(app);
 
     return app;
 };
