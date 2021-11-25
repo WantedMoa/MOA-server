@@ -20,29 +20,28 @@ exports.getRecruits = async function(req, res) {
     const recruitsResult = await comProvider.retrievePosts(userIdFromJWT);
 
 
-
-    return res.send(baseResponse.SUCCESS, recruitsResult);
+    return res.send(response(baseResponse.SUCCESS, recruitsResult));
 };
 
 /**
  * API Name : 모집 공고 상세 조회
  * [POST] /app/recruits/:recruitId
  */
-exports.getRecruittById = async function(req, res) {
+exports.getRecruitById = async function(req, res) {
     /**
      * path variable : postId
      */
     const userIdFromJWT = req.verifiedToken.userId;
-    const postId = req.params.postId;
+    const recruitId = req.params.recruitId;
 
-    if (!postId) return res.send(response(baseResponse.POST_ID_EMPTY));
+    if (!recruitId) return res.send(response(baseResponse.POST_ID_EMPTY));
 
     const postResult = await comProvider.retrievePostById(
         userIdFromJWT,
-        postId
+        recruitId
     );
 
-    return res.send(baseResponse.SUCCESS, postResult);
+    return res.send(response(baseResponse.SUCCESS, postResult));
 
 };
 
