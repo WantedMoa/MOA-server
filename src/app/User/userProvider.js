@@ -5,36 +5,44 @@ const userDao = require("./userDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.retrieveUserList = async function (email) {
-  if (!email) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUser(connection);
-    connection.release();
+exports.retrieveUserList = async function(email) {
+    if (!email) {
+        const connection = await pool.getConnection(async(conn) => conn);
+        const userListResult = await userDao.selectUser(connection);
+        connection.release();
 
-    return userListResult;
+        return userListResult;
 
-  } else {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUserEmail(connection, email);
-    connection.release();
+    } else {
+        const connection = await pool.getConnection(async(conn) => conn);
+        const userListResult = await userDao.selectUserEmail(connection, email);
+        connection.release();
 
-    return userListResult;
-  }
+        return userListResult;
+    }
 };
 
-exports.retrieveUser = async function (userId) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userResult = await userDao.selectUserId(connection, userId);
+exports.retrieveUser = async function(userId) {
+    const connection = await pool.getConnection(async(conn) => conn);
+    const userResult = await userDao.selectUserId(connection, userId);
 
-  connection.release();
+    connection.release();
 
-  return userResult[0];
+    return userResult[0];
 };
 
-exports.emailCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const emailCheckResult = await userDao.selectUserEmail(connection, email);
-  connection.release();
+exports.emailCheck = async function(email) {
+    const connection = await pool.getConnection(async(conn) => conn);
+    const emailCheckResult = await userDao.selectUserEmail(connection, email);
+    connection.release();
 
-  return emailCheckResult;
+    return emailCheckResult;
+};
+
+exports.emailVerifyCheck = async function(email) {
+    const connection = await pool.getConnection(async(conn) => conn);
+    const emailCheckResult = await userDao.selectUnivEmail(connection, email);
+    connection.release();
+
+    return emailCheckResult;
 };
