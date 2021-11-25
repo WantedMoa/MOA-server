@@ -14,18 +14,24 @@ const { connect } = require("http2");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
-exports.createPost = async function(userId, pictureUrl, deadline, title, startDate, endDate, content) {
+exports.createRecruit = async function(userId, pictureUrl, deadline, title, startDate, endDate, content, position) {
     try {
         const connection = await pool.getConnection(async(conn) => conn);
         const insertPostParams = [userId, pictureUrl, deadline, title, startDate, endDate, content]
-        const insertPostResult = await comDao.insertPost(connection, insertPostParams);
+        const insertPostResult = await comDao.insertRecruit(connection, insertPostParams);
 
+        const recruitIdx = insertPostResult.insertId;
+        console.log(recruitIdx);
+
+        for (positionIdx of position) {
+            var insertRecruitPosionResult = await comDao.insertRecruitPosition(connection, recruitIdx, positionIdx);
+        }
 
         connection.release();
         return response(baseResponse.SUCCESS);
 
     } catch (err) {
-        logger.error(`App - insertPost Service error\n: ${err.message}`);
+        logger.error(`App - insert Recruit Service error\n: ${err.message}`);
         return baseResponse.DB_ERROR;
     }
 }

@@ -16,8 +16,8 @@ const { emit } = require("nodemon");
  * [GET] /app/recruits
  */
 exports.getRecruits = async function(req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const recruitsResult = await comProvider.retrievePosts(userIdFromJWT);
+    const userIdFromJWT = req.verifiedToken.userIdx;
+    const recruitsResult = await comProvider.retrieveRecruits(userIdFromJWT);
 
 
     return res.send(response(baseResponse.SUCCESS, recruitsResult));
@@ -31,17 +31,17 @@ exports.getRecruitById = async function(req, res) {
     /**
      * path variable : postId
      */
-    const userIdFromJWT = req.verifiedToken.userId;
+    const userIdFromJWT = req.verifiedToken.userIdx;
     const recruitId = req.params.recruitId;
 
-    if (!recruitId) return res.send(response(baseResponse.POST_ID_EMPTY));
+    if (!recruitId) return res.send(response(baseResponse.RECRUIT_ID_EMPTY));
 
-    const postResult = await comProvider.retrievePostById(
+    const recruitResult = await comProvider.retrieveRecruitById(
         userIdFromJWT,
         recruitId
     );
 
-    return res.send(response(baseResponse.SUCCESS, postResult));
+    return res.send(response(baseResponse.SUCCESS, recruitResult));
 
 };
 
@@ -51,7 +51,7 @@ exports.getRecruitById = async function(req, res) {
  */
 exports.writeRecruitPost = async function(req, res) {
     const userIdFromJWT = req.verifiedToken.userIdx; // 내 아이디
-    const { deadline, title, startDate, endDate, content } = req.body;
+    const { deadline, title, startDate, endDate, content, position } = req.body;
 
     if (!userIdFromJWT) return res.send(response(baseResponse.USER_USERID_EMPTY));
 
@@ -62,7 +62,6 @@ exports.writeRecruitPost = async function(req, res) {
     if (!endDate) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
     if (!content) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
 
-
     // 이미지 확인
     if (req.file !== undefined)
         var pictureUrl = req.file.location;
@@ -70,9 +69,7 @@ exports.writeRecruitPost = async function(req, res) {
         var pictureUrl = 'https://moabucket.s3.ap-northeast-2.amazonaws.com/profile.png';
 
     // 게시글 등록 
+    const writeRecruitResponse = await comService.createRecruit(userIdFromJWT, pictureUrl, deadline, title, startDate, endDate, content, position);
 
-    const writeResponse = await comService.createPost(userIdFromJWT, pictureUrl, deadline, title, startDate, endDate, content);
-
-    return res.send(writeResponse);
-
+    return res.send(writeRecruitResponse);
 };
