@@ -17,4 +17,7 @@ module.exports = function(app) {
     // 로그인 API
     app.post("/app/login", user.login);
 
+    // 사용자 프로필 조회 API
+    app.get("/app/users/:userId", jwtMiddleware, user.getUser)
+
 };
