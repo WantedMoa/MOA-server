@@ -20,5 +20,9 @@ module.exports = function() {
     require('../src/app/User/userRoute')(app);
     require('../src/app/Community/comRoute')(app);
 
+
+
+    require('../src/app/Home/homeRoute')(app);
+
     return app;
 };

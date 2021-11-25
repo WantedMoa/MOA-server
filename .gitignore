@@ -1,6 +1,4 @@
 node_modules
-secret.js
+
 log
-.DS_Store
-email.js
-s3.js
+
