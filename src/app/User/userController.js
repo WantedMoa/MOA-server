@@ -143,3 +143,11 @@ exports.login = async function(req, res) {
 
     return res.send(signInResponse);
 };
+
+exports.getUser = async function(req, res) {
+    const userIdFromJWT = req.verifiedToken.userIdx;
+    const userId = req.params.userId;
+
+    const userResponse = await userProvider.retrieveUser(userId);
+    return res.send(response(baseResponse.SUCCESS, userResponse));
+}

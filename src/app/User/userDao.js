@@ -55,7 +55,10 @@ async function updateEmailVerify(connection, email) {
 
 // userId 회원 조회
 async function selectUserId(connection, userId) {
-    const selectUserIdQuery = ` SELECT userIdx, email, nickname FROM User WHERE userIdx = ?; `;
+    const selectUserIdQuery = ` SELECT userIdx, name, University.universityName AS university, bio, experiance, portfolio 
+    FROM User 
+    INNER JOIN University ON University.universityIdx = User.universityIdx
+    WHERE userIdx = ?; `;
     const [userRow] = await connection.query(selectUserIdQuery, userId);
     return userRow;
 }
