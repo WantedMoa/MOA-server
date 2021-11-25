@@ -27,8 +27,8 @@ exports.sendEmail = async function(req, res) {
 
     // 대학 이메일인지 확인
     emailaddress = email.split('@')[1];
-
-    const emailRows = await userProvider.emailVerifyCheck(emailaddress);
+    console.log(emailaddress);
+    const emailRows = await userProvider.emailUnivCheck(emailaddress);
     if (emailRows.length < 1)
         return res.send(errResponse(baseResponse.UNIV_NOT_EXIST));
 
@@ -71,3 +71,49 @@ exports.emailVerify = async function(req, res) {
     const emailVerifyResponse = await userService.postEmailVerify(email);
     return res.send(emailVerifyResponse);
 };
+
+
+/**
+ * API No.
+ * API Name : 회원가입 - 이메일 체크 API
+ * [GET] /app/users/check
+ */
+exports.postEmailCheck = async function(req, res) {
+    const email = req.query.email;
+    // 빈 값 체크
+    if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+
+    //이메일 인증 여부 확인
+    const emailVerifyRows = await userProvider.emailVerifyCheck(email);
+    if (emailVerifyRows.length < 1)
+        return res.send(errResponse(baseResponse.SIGNUP_EMAIL_NOT_VERIFIED));
+    if (emailVerifyRows[0].isVerified === 0)
+        return res.send(errResponse(baseResponse.SIGNUP_EMAIL_NOT_VERIFIED));
+
+    return res.send(response(baseResponse.SUCCESS));
+};
+
+
+/**
+ * API No.
+ * API Name : 회원가입 API
+ * [POST] /app/users
+ */
+exports.postUser = async function(req, res) {
+    const { email, password, name, position } = req.body;
+
+    // 빈 값 체크
+    if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    if (!password) return res.send(baseResponse.SIGNUP_PASSWORD_EMPTY)
+    if (!name) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+    if (!position) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+
+    // 길이 체크
+    if (password.length < 6 || password.length > 12)
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
+
+
+    const signupResponse = await userService.createUser(email, password, name, position);
+
+    return res.send(signupResponse);
+}

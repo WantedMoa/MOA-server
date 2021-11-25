@@ -11,4 +11,10 @@ module.exports = function(app) {
     // 이메일 인증 확인 API
     app.get("/app/email-check", user.emailVerify);
 
+    //회원가입 - 이메일 체크 API
+    app.post("/app/users/check", user.postEmailCheck);
+
+    // 유저 생성(회원가입) API
+    app.post("/app/users", user.postUser);
+
 };

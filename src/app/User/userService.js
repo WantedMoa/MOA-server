@@ -16,23 +16,25 @@ const { connect } = require("http2");
 //이메일 인증
 exports.postEmailVerify = async function(email) {
     try {
-        // 대학 이메일인지 확인
-        emailaddress = email.split('@')[1];
-
-        const emailRows = await userProvider.emailVerifyCheck(emailaddress);
-        if (emailRows.length < 1)
-            return errResponse(baseResponse.UNIV_NOT_EXIST);
-        universityIdx = emailRows[0].universityIdx;
-
-        //create
-        const connection = await pool.getConnection(async(conn) => conn);
-        const emailVerifyResult = await userDao.insertEmailVerify(
-            connection,
-            email,
-            universityIdx
-        );
-        connection.release();
-
+        // 이메일 여부 확인
+        const emailRows = await userProvider.emailVerifyCheck(email);
+        if (emailRows.length > 1) {
+            //update
+            const connection = await pool.getConnection(async(conn) => conn);
+            const emailVerifyResult = await userDao.updateEmailVerify(
+                connection,
+                email
+            );
+            connection.release();
+        } else {
+            //create
+            const connection = await pool.getConnection(async(conn) => conn);
+            const emailVerifyResult = await userDao.insertEmailVerify(
+                connection,
+                email
+            );
+            connection.release();
+        }
         return response({ message: "이메일 인증이 완료되었습니다" });
     } catch (err) {
         logger.error(`App - EmailVerify Service error\n: ${err.message}`);
@@ -40,12 +42,15 @@ exports.postEmailVerify = async function(email) {
     }
 };
 
-exports.createUser = async function(email, password, nickname) {
+exports.createUser = async function(email, password, name, position) {
     try {
-        // 이메일 중복 확인
-        const emailRows = await userProvider.emailCheck(email);
-        if (emailRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL);
+        // 대학 이메일인지 확인
+        emailaddress = email.split('@')[1];
+
+        const emailRows = await userProvider.emailUnivCheck(emailaddress);
+        if (emailRows.length < 1)
+            return errResponse(baseResponse.UNIV_NOT_EXIST);
+        universityIdx = emailRows[0].universityIdx;
 
         // 비밀번호 암호화
         const hashedPassword = await crypto
@@ -53,7 +58,7 @@ exports.createUser = async function(email, password, nickname) {
             .update(password)
             .digest("hex");
 
-        const insertUserInfoParams = [email, hashedPassword, nickname];
+        const insertUserInfoParams = [email, hashedPassword, universityIdx, name, position];
 
         const connection = await pool.getConnection(async(conn) => conn);
 

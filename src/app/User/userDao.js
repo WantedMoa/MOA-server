@@ -34,22 +34,25 @@ async function selectUnivEmail(connection, email) {
 //이메일 인증 조회
 async function selectVerifiedEmail(connection, email) {
     const selectUserEmailQuery = `
-              SELECT id, email, case
-              when TIMESTAMPDIFF(Hour, updatedAt, current_timestamp()) > 24
-                  then 1
-              end as isExpired, isVerified
+              SELECT emailCheckIdx, email, isVerified
               FROM EmailCheck
               WHERE email = ?;
               `;
     const [emailRows] = await connection.query(selectUserEmailQuery, email);
     return emailRows;
 }
-
-async function insertEmailVerify(connection, email, universityIdx) {
-    const insertUserInfoQuery = `INSERT INTO User(email, universityIdx) VALUES (?, ?);`;
-    const insertUserInfoRow = await connection.query(insertUserInfoQuery, [email, universityIdx]);
+// 인증
+async function insertEmailVerify(connection, email) {
+    const insertUserInfoQuery = `INSERT INTO EmailCheck(email, isVerified) VALUES(?, 1);`;
+    const insertUserInfoRow = await connection.query(insertUserInfoQuery, [email]);
 
     return insertUserInfoRow;
+}
+
+async function updateEmailVerify(connection, email) {
+    const updateEmailQuery = `UPDATE EmailCheck SET isVerified = 1 WHERE email = ?;`;
+    const updateEmailRow = await connection.query(updateEmailQuery, email);
+    return updateEmailRow[0];
 }
 
 // userId 회원 조회
@@ -66,8 +69,8 @@ async function selectUserId(connection, userId) {
 // 유저 생성
 async function insertUserInfo(connection, insertUserInfoParams) {
     const insertUserInfoQuery = `
-        INSERT INTO User(email, password, nickname)
-        VALUES (?, ?, ?);
+        INSERT INTO User(email, password, universityIdx,  name, positionIdx)
+        VALUES (?, ?, ?, ?, ?);
     `;
     const insertUserInfoRow = await connection.query(
         insertUserInfoQuery,
@@ -83,6 +86,7 @@ module.exports = {
     selectUnivEmail,
     insertEmailVerify,
     selectVerifiedEmail,
+    updateEmailVerify,
     selectUserId,
     insertUserInfo,
 };

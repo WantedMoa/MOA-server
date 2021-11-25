@@ -36,6 +36,7 @@ module.exports = {
     // Response error
     SIGNUP_REDUNDANT_EMAIL: { "isSuccess": false, "code": 3001, "message": "중복된 이메일입니다." },
     SIGNUP_REDUNDANT_NICKNAME: { "isSuccess": false, "code": 3002, "message": "중복된 닉네임입니다." },
+    SIGNUP_EMAIL_NOT_VERIFIED: { "isSuccess": false, "code": 3003, "message": "이메일 인증이 완료되지 않았습니다" },
 
     SIGNIN_EMAIL_WRONG: { "isSuccess": false, "code": 3003, "message": "아이디가 잘못 되었습니다." },
     SIGNIN_PASSWORD_WRONG: { "isSuccess": false, "code": 3004, "message": "비밀번호가 잘못 되었습니다." },

@@ -39,9 +39,17 @@ exports.emailCheck = async function(email) {
     return emailCheckResult;
 };
 
+exports.emailUnivCheck = async function(emailaddress) {
+    const connection = await pool.getConnection(async(conn) => conn);
+    const univCheckResult = await userDao.selectUnivEmail(connection, emailaddress);
+    connection.release();
+
+    return univCheckResult;
+}
+
 exports.emailVerifyCheck = async function(email) {
     const connection = await pool.getConnection(async(conn) => conn);
-    const emailCheckResult = await userDao.selectUnivEmail(connection, email);
+    const emailCheckResult = await userDao.selectVerifiedEmail(connection, email);
     connection.release();
 
     return emailCheckResult;
