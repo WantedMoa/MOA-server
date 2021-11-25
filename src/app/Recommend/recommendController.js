@@ -14,9 +14,7 @@ const {emit} = require("nodemon");
  * [GET] /recruits
  */
  exports.getRecruits = async function (req, res) {
-    // const userIdx = req.verifiedToken.userIdx;
-
-    const userIdx = 2;
+    const userIdx = req.verifiedToken.userIdx;
 
     const recruitListResult = await recommendProvider.getRecruitList(userIdx);
 

@@ -27,9 +27,7 @@ exports.getContests = async function (req, res) {
  */
  exports.getPopularUser = async function (req, res) {
 
-    // const userIdx = req.verifiedToken.userIdx;
-
-    const userIdx = 2;
+    const userIdx = req.verifiedToken.userIdx;
 
     const userListResult = await homeProvider.getUserList(userIdx);
     
@@ -43,9 +41,7 @@ exports.getContests = async function (req, res) {
  */
  exports.getPopularUserDetail = async function (req, res) {
 
-    // const userIdx = req.verifiedToken.userIdx;
-
-    const userIdx = 2;
+    const userIdx = req.verifiedToken.userIdx;
 
     const pmListResult = await homeProvider.getPmList(userIdx);
     const developerListResult = await homeProvider.getDeveloperList(userIdx);
@@ -67,9 +63,7 @@ exports.getContests = async function (req, res) {
  */
  exports.getPopularRecruit = async function (req, res) {
 
-    // const userIdx = req.verifiedToken.userIdx;
-
-    const userIdx = 2;
+    const userIdx = req.verifiedToken.userIdx;
 
     const recruitListResult = await homeProvider.getRecruitList();
     
