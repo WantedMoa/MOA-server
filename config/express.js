@@ -19,5 +19,9 @@ module.exports = function() {
     /* App (Android, iOS) */
     require('../src/app/User/userRoute')(app);
 
+
+
+    require('../src/app/Home/homeRoute')(app);
+
     return app;
 };
