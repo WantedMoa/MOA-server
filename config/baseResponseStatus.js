@@ -32,6 +32,11 @@ module.exports = {
 
     USER_STATUS_EMPTY : { "isSuccess": false, "code": 2018, "message": "회원 상태값을 입력해주세요" },
 
+
+
+
+    RECRUIT_IDX_EMPTY : { "isSuccess": false, "code": 2501, "message": "모집공고 idx를 입력해주세요" },
+
     // Response error
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
     SIGNUP_REDUNDANT_NICKNAME : { "isSuccess": false, "code": 3002, "message":"중복된 닉네임입니다." },
@@ -40,6 +45,12 @@ module.exports = {
     SIGNIN_PASSWORD_WRONG : { "isSuccess": false, "code": 3004, "message": "비밀번호가 잘못 되었습니다." },
     SIGNIN_INACTIVE_ACCOUNT : { "isSuccess": false, "code": 3005, "message": "비활성화 된 계정입니다. 고객센터에 문의해주세요." },
     SIGNIN_WITHDRAWAL_ACCOUNT : { "isSuccess": false, "code": 3006, "message": "탈퇴 된 계정입니다. 고객센터에 문의해주세요." },
+
+
+
+
+    RECRUIT_EMPTY : { "isSuccess": false, "code": 3501, "message":"등록한 공고가 없습니다." },
+    RECOMMEND_EMPTY : { "isSuccess": false, "code": 3510, "message":"모집 공고에 맞는 추천 유저가 없습니다." },
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
