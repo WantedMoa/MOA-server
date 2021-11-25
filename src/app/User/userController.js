@@ -2,93 +2,144 @@ const jwtMiddleware = require("../../../config/jwtMiddleware");
 const userProvider = require("../../app/User/userProvider");
 const userService = require("../../app/User/userService");
 const baseResponse = require("../../../config/baseResponseStatus");
-const {response, errResponse} = require("../../../config/response");
-
+const { response, errResponse } = require("../../../config/response");
+const { smtpTransport } = require("../../../config/email.js");
 const regexEmail = require("regex-email");
-const {emit} = require("nodemon");
+const { emit } = require("nodemon");
+
 
 /**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
+ * API No.
+ * API Name : 인증 메일 전송 API
+ * [GET] /app/email-check
  */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
-
-/**
- * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
- */
-exports.postUsers = async function (req, res) {
-
-    /**
-     * Body: email, password, nickname
-     */
-    const {email, password, nickname} = req.body;
+exports.sendEmail = async function(req, res) {
+    const email = req.body.email;
 
     // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-
+    if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
     // 길이 체크
     if (email.length > 30)
         return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
-
     // 형식 체크 (by 정규표현식)
     if (!regexEmail.test(email))
         return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
 
-    // 기타 등등 - 추가하기
+    // 대학 이메일인지 확인
+    emailaddress = email.split('@')[1];
+    console.log(emailaddress);
+    const emailRows = await userProvider.emailUnivCheck(emailaddress);
+    if (emailRows.length < 1)
+        return res.send(errResponse(baseResponse.UNIV_NOT_EXIST));
+
+    // 이메일 중복인지
+    const userRows = await userProvider.emailCheck(email);
+
+    if (userRows.length > 0)
+        return res.send(errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL));
 
 
-    const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
+    const mailOptions = {
+        from: "yeonns2@naver.com",
+        to: email,
+        subject: "[MOA]회원가입 이메일 인증 메일입니다.",
+        html: `<html><head></head><body><h3>MOA 가입을 위해 이메일 인증을 진행해주세요. <h3><a href="http://127.0.0.1:3000/app/email-check?email=${email}" rel="noreferrer noopener" target="_blank">이메일 인증</a></body></html>`,
+    };
+
+    const result = await smtpTransport.sendMail(
+        mailOptions,
+        (error, responses) => {
+            if (error) {
+                res.send(errResponse(baseResponse.SIGNUP_SENDEMAIL_FAIL));
+            } else {
+                res.send(response(baseResponse.SUCCESS));
+            }
+            smtpTransport.close();
+        }
     );
-
-    return res.send(signUpResponse);
+    return;
 };
 
 /**
- * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
- * [GET] /app/users
+ * API No.
+ * API Name : 메일 인증 확인 API
+ * [GET] /app/email-check
  */
-exports.getUsers = async function (req, res) {
-
-    /**
-     * Query String: email
-     */
+exports.emailVerify = async function(req, res) {
     const email = req.query.email;
 
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        return res.send(response(baseResponse.SUCCESS, userListResult));
-    } else {
-        // 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
-    }
+    const emailVerifyResponse = await userService.postEmailVerify(email);
+    return res.send(emailVerifyResponse);
 };
 
+
 /**
- * API No. 3
- * API Name : 특정 유저 조회 API
- * [GET] /app/users/{userId}
+ * API No.
+ * API Name : 회원가입 - 이메일 체크 API
+ * [GET] /app/users/check
  */
-exports.getUserById = async function (req, res) {
+exports.postEmailCheck = async function(req, res) {
+    const email = req.query.email;
+    // 빈 값 체크
+    if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
 
-    /**
-     * Path Variable: userId
-     */
-    const userId = req.params.userId;
+    //이메일 인증 여부 확인
+    const emailVerifyRows = await userProvider.emailVerifyCheck(email);
+    if (emailVerifyRows.length < 1)
+        return res.send(errResponse(baseResponse.SIGNUP_EMAIL_NOT_VERIFIED));
+    if (emailVerifyRows[0].isVerified === 0)
+        return res.send(errResponse(baseResponse.SIGNUP_EMAIL_NOT_VERIFIED));
 
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
+    return res.send(response(baseResponse.SUCCESS));
+};
 
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
+
+/**
+ * API No.
+ * API Name : 회원가입 API
+ * [POST] /app/users
+ */
+exports.postUser = async function(req, res) {
+    const { email, password, name, position } = req.body;
+
+    // 빈 값 체크
+    if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    if (!password) return res.send(baseResponse.SIGNUP_PASSWORD_EMPTY)
+    if (!name) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+    if (!position) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+
+    // 길이 체크
+    if (password.length < 6 || password.length > 12)
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
+
+
+    const signupResponse = await userService.createUser(email, password, name, position);
+
+    return res.send(signupResponse);
+}
+
+/**
+ * API Name : 로그인 API
+ * [POST] /app/login
+ * body : email, passsword
+ */
+exports.login = async function(req, res) {
+    const { email, password } = req.body;
+
+    // 빈 값 체크
+    if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    if (!password) return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
+    // 길이 체크
+    if (email.length > 30)
+        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    if (password.length < 6 || password.length > 12) {
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
+    }
+    // 형식 체크 (by 정규표현식)
+    if (!regexEmail.test(email))
+        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
+
+    const signInResponse = await userService.postSignIn(email, password);
+
+    return res.send(signInResponse);
 };

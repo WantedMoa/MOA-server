@@ -1,20 +1,20 @@
-module.exports = function(app){
+module.exports = function(app) {
     const user = require('./userController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
-    // 0. 테스트 API
-    // app.get('/app/test', user.getTest)
+    // 이메일 인증 전송 API
+    app.post("/app/email-send", user.sendEmail);
 
-    // 1. 유저 생성 (회원가입) API
-    app.route('/app/users').post(user.postUsers);
+    // 이메일 인증 확인 API
+    app.get("/app/email-check", user.emailVerify);
 
-    // 2. 유저 조회 API (+ 검색)
-    app.get('/app/users',user.getUsers); 
+    // 회원가입 - 이메일 체크 API
+    app.post("/app/users/check", user.postEmailCheck);
 
-    // 3. 특정 유저 조회 API
-    app.get('/app/users/:userId', user.getUserById);
+    // 유저 생성(회원가입) API
+    app.post("/app/users", user.postUser);
 
-    // jwt를 사용하기 위해 jwtMiddleware 를 체이닝 방식으로 추가하는 예제
-    // app.get('/app/users/:userId', jwtMiddleware, user.getUserById);
+    // 로그인 API
+    app.post("/app/login", user.login);
 
 };
