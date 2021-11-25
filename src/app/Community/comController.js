@@ -71,6 +71,7 @@ exports.writeRecruitPost = async function(req, res) {
     // 게시글 등록 
     const writeRecruitResponse = await comService.createRecruit(userIdFromJWT, pictureUrl, deadline, title, startDate, endDate, content, position);
 
+
     return res.send(writeRecruitResponse);
 };
 
@@ -81,4 +82,14 @@ exports.postApply = async function(req, res) {
 
     const ApplyResponse = await comService.createApply(recruitIdx, userIdFromJWT, title, content);
     return res.send(ApplyResponse);
+}
+
+exports.postMatch = async function(req, res) {
+    const userIdFromJWT = req.verifiedToken.userIdx;
+    const recruitIdx = req.params.recruitId;
+    const userId = req.body.userId;
+
+    const ApplyResponse = await comService.createTeam(recruitIdx, userId);
+    return res.send(ApplyResponse);
+
 }

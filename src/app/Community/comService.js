@@ -21,7 +21,9 @@ exports.createRecruit = async function(userIdx, pictureUrl, deadline, title, sta
         const insertPostResult = await comDao.insertRecruit(connection, insertPostParams);
 
         const recruitIdx = insertPostResult.insertId;
-        console.log(recruitIdx);
+
+        // 팀 개설
+        const createTeam = await comDao.insertTeam(connection, recruitIdx, userIdx);
 
         for (positionIdx of position) {
             var insertRecruitPosionResult = await comDao.insertRecruitPosition(connection, recruitIdx, positionIdx);
@@ -40,6 +42,14 @@ exports.createApply = async function(recruitIdx, userIdx, title, content) {
     const connection = await pool.getConnection(async(conn) => conn);
     const insertApplyParams = [recruitIdx, userIdx, title, content];
     const insertApplyResult = await comDao.insertApply(connection, insertApplyParams);
+
+    connection.release();
+    return response(baseResponse.SUCCESS);
+}
+
+exports.createTeam = async function(recruitIdx, userIdx) {
+    const connection = await pool.getConnection(async(conn) => conn);
+    const insertTeamResult = await comDao.insertTeam(connection, recruitIdx, userIdx);
 
     connection.release();
     return response(baseResponse.SUCCESS);

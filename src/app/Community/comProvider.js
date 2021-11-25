@@ -9,7 +9,7 @@ const comDao = require("./comDao");
 exports.retrieveRecruits = async function(userId) {
     const connection = await pool.getConnection(async(conn) => conn);
     try {
-
+        await connection.beginTransaction();
         const recruitListResult = await comDao.selectRecruit(connection);
 
         for (recruit of recruitListResult) {
@@ -36,6 +36,8 @@ exports.retrieveRecruits = async function(userId) {
 exports.retrieveRecruitById = async function(userId, recruitId) {
     const connection = await pool.getConnection(async(conn) => conn);
     try {
+
+        await connection.beginTransaction();
         const recruitResult = await comDao.selectRecruitById(connection, recruitId);
 
         const positionResult = await comDao.selectRecruitPosition(connection, recruitId);
@@ -46,7 +48,7 @@ exports.retrieveRecruitById = async function(userId, recruitId) {
         }
         recruitResult[0].position = position;
         connection.release();
-        return recruitResult[0];
+        return recruitResult;
     } catch (err) {
         logger.error(`App - retrieveRecruitById Error\n: ${err.message}`);
         await connection.rollback();

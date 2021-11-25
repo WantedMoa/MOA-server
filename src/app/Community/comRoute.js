@@ -15,4 +15,7 @@ module.exports = function(app) {
     // 지원하기 API
     app.post("/app/recruits/:recruitId/apply", jwtMiddleware, com.postApply)
 
+    // 팀원으로 선택하기(팀 매칭) API
+    app.post("/app/recruits/:recruitId/matching", jwtMiddleware, com.postMatch)
+
 }

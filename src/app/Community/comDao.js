@@ -40,8 +40,9 @@ async function selectRecruitPosition(connection, recruitIdx) {
 // 아이디로 글 검색
 async function selectRecruitById(connection, recruitIdx) {
     const selectRecruitListQuery = `
-    SELECT recruitIdx, pictureUrl, date_format(deadline, '%y-%m-%d') AS deadline, title, date_format(startDate, '%y-%m-%d') AS startDate, date_format(endDate, '%y-%m-%d') AS endDate, content
+    SELECT recruitIdx, Recruit.userIdx, User.name, User.profileImg, User.bio, pictureUrl, date_format(deadline, '%y-%m-%d') AS deadline, title, date_format(startDate, '%y-%m-%d') AS startDate, date_format(endDate, '%y-%m-%d') AS endDate, content
     FROM Recruit
+    JOIN User ON User.userIdx = Recruit.userIdx
     WHERE recruitIdx = ?;
     `;
     const [recruitRows] = await connection.query(selectRecruitListQuery, [recruitIdx]);
@@ -51,10 +52,19 @@ async function selectRecruitById(connection, recruitIdx) {
 // 지원하기 
 async function insertApply(connection, insertApplyParams) {
     const insertApplyQuery = `
-    INSERT INTO APPLY(recruitIdx, userIdx, title, content) VALUES (?, ?, ?, ?);
+    INSERT INTO Apply(recruitIdx, userIdx, title, content) VALUES (?, ?, ?, ?);
     `;
     const [ApplyRows] = await connection.query(insertApplyQuery, insertApplyParams);
     return ApplyRows;
+}
+
+// 팀원 등록하기 
+async function insertTeam(connection, recruitIdx, userIdx) {
+    const insertTeamQuery = `
+    INSERT INTO Team(recruitIdx, userIdx) VALUES (?, ?);
+    `;
+    const [TeamRows] = await connection.query(insertTeamQuery, [recruitIdx, userIdx]);
+    return TeamRows;
 }
 
 module.exports = {
@@ -63,5 +73,6 @@ module.exports = {
     selectRecruit,
     selectRecruitPosition,
     selectRecruitById,
-    insertApply
+    insertApply,
+    insertTeam
 }
