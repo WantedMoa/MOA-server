@@ -51,7 +51,7 @@ exports.getRecruitById = async function(req, res) {
  */
 exports.writeRecruitPost = async function(req, res) {
     const userIdFromJWT = req.verifiedToken.userIdx; // 내 아이디
-    const { deadline, title, startDate, endDate, content, position } = req.body;
+    const { deadline, title, startDate, endDate, content } = req.body;
 
     if (!userIdFromJWT) return res.send(response(baseResponse.USER_USERID_EMPTY));
 
@@ -61,16 +61,16 @@ exports.writeRecruitPost = async function(req, res) {
     if (!startDate) return res.send(response(baseResponse.START_DATE_EMPTY));
     if (!endDate) return res.send(response(baseResponse.END_DATE_EMPTY));
     if (!content) return res.send(response(baseResponse.CONTENT_EMPTY));
-    if (!position) return res.send(response(baseResponse.POSITION_EMPTY));
+
 
     // 이미지 확인
     if (req.file !== undefined)
         var pictureUrl = req.file.location;
     else
-        var pictureUrl = 'https://moabucket.s3.ap-northeast-2.amazonaws.com/profile.png';
+        var pictureUrl = 'https://pindergarten.s3.ap-northeast-2.amazonaws.com/moa/1637918862628.png';
 
     // 게시글 등록 
-    const writeRecruitResponse = await comService.createRecruit(userIdFromJWT, pictureUrl, deadline, title, startDate, endDate, content, position);
+    const writeRecruitResponse = await comService.createRecruit(userIdFromJWT, pictureUrl, deadline, title, startDate, endDate, content);
 
 
     return res.send(writeRecruitResponse);
