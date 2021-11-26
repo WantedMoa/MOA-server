@@ -43,7 +43,7 @@ exports.sendEmail = async function(req, res) {
         from: "yeonns2@naver.com",
         to: email,
         subject: "[MOA]회원가입 이메일 인증 메일입니다.",
-        html: `<html><head></head><body><h3>MOA 가입을 위해 이메일 인증을 진행해주세요. <h3><a href="http://127.0.0.1:3000/app/email-check?email=${email}" rel="noreferrer noopener" target="_blank">이메일 인증</a></body></html>`,
+        html: `<html><head></head><body><h3>MOA 가입을 위해 이메일 인증을 진행해주세요. <h3><a href="http://15.165.37.246:3000/app/email-check?email=${email}" rel="noreferrer noopener" target="_blank">이메일 인증</a></body></html>`,
     };
 
     const result = await smtpTransport.sendMail(
