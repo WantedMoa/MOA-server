@@ -3,6 +3,7 @@ const multerS3 = require('multer-s3');
 const s3 = require('./s3');
 
 const upload = multer({
+    limits: { fieldSize: 25 * 1024 * 1024 },
     storage: multerS3({
         s3: s3,
         bucket: 'pindergarten/moa',
