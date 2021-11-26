@@ -48,7 +48,7 @@ exports.retrieveRecruitById = async function(userId, recruitId) {
         }
         recruitResult[0].position = position;
         connection.release();
-        return recruitResult;
+        return recruitResult[0];
     } catch (err) {
         logger.error(`App - retrieveRecruitById Error\n: ${err.message}`);
         await connection.rollback();
