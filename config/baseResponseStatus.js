@@ -33,14 +33,19 @@ module.exports = {
     USER_STATUS_EMPTY: { "isSuccess": false, "code": 2018, "message": "회원 상태값을 입력해주세요" },
     SIGNUP_SENDEMAIL_FAIL: { "isSuccess": false, "code": 2019, "message": "이메일 전송에 실패하였습니다." },
 
+    DEADLINE_EMPTY: { "isSuccess": false, "code": 2020, "message": "모집 기한을 입력해주세요." },
+    TITLE_EMPTY: { "isSuccess": false, "code": 2021, "message": "제목을 입력해주세요." },
+    START_DATE_EMPTY: { "isSuccess": false, "code": 2022, "message": "시작 날짜를 입력해주세요." },
+    END_DATE_EMPTY: { "isSuccess": false, "code": 2023, "message": "마감 날짜를 입력해주세요." },
+    CONTENT_EMPTY: { "isSuccess": false, "code": 2024, "message": "내용을 입력해주세요" },
+    POSITION_EMPTY: { "isSuccess": false, "code": 2025, "message": "모집 분야를 선택해주세요." },
 
 
+    RECRUIT_IDX_EMPTY: { "isSuccess": false, "code": 2501, "message": "모집공고 idx를 입력해주세요" },
 
-    RECRUIT_IDX_EMPTY : { "isSuccess": false, "code": 2501, "message": "모집공고 idx를 입력해주세요" },
-
-    USER_IDX_REVIEW_EMPTY : { "isSuccess": false, "code": 2530, "message":"리뷰 할 멤버의 인덱스를 입력해주세요" },
-    REVIEW_RATE_EMPTY : { "isSuccess": false, "code": 2531, "message":"리뷰 점수를 입력해주세요" },
-    REVIEW_EMPTY : { "isSuccess": false, "code": 2532, "message":"리뷰 내용을 입력해주세요" },
+    USER_IDX_REVIEW_EMPTY: { "isSuccess": false, "code": 2530, "message": "리뷰 할 멤버의 인덱스를 입력해주세요" },
+    REVIEW_RATE_EMPTY: { "isSuccess": false, "code": 2531, "message": "리뷰 점수를 입력해주세요" },
+    REVIEW_EMPTY: { "isSuccess": false, "code": 2532, "message": "리뷰 내용을 입력해주세요" },
 
     // Response error
     SIGNUP_REDUNDANT_EMAIL: { "isSuccess": false, "code": 3001, "message": "중복된 이메일입니다." },
@@ -56,12 +61,12 @@ module.exports = {
 
 
 
-    RECRUIT_EMPTY : { "isSuccess": false, "code": 3501, "message":"등록한 공고가 없습니다." },
-    RECOMMEND_EMPTY : { "isSuccess": false, "code": 3510, "message":"모집 공고에 맞는 추천 유저가 없습니다." },
+    RECRUIT_EMPTY: { "isSuccess": false, "code": 3501, "message": "등록한 공고가 없습니다." },
+    RECOMMEND_EMPTY: { "isSuccess": false, "code": 3510, "message": "모집 공고에 맞는 추천 유저가 없습니다." },
 
-    TEAM_EMPTY : { "isSuccess": false, "code": 3520, "message":"나의 팀이 없습니다." },
-    TEAM_REVIEW_ERROR : { "isSuccess": false, "code": 3530, "message":"리뷰 작성 권한이 없는 멤버 입니다." },
-    TEAM_REVIEW_ALREADY : { "isSuccess": false, "code": 3531, "message":"이미 리뷰를 작성한 멤버 입니다." },
+    TEAM_EMPTY: { "isSuccess": false, "code": 3520, "message": "나의 팀이 없습니다." },
+    TEAM_REVIEW_ERROR: { "isSuccess": false, "code": 3530, "message": "리뷰 작성 권한이 없는 멤버 입니다." },
+    TEAM_REVIEW_ALREADY: { "isSuccess": false, "code": 3531, "message": "이미 리뷰를 작성한 멤버 입니다." },
 
 
     //Connection, Transaction 등의 서버 오류

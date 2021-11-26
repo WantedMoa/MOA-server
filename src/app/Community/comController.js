@@ -56,11 +56,12 @@ exports.writeRecruitPost = async function(req, res) {
     if (!userIdFromJWT) return res.send(response(baseResponse.USER_USERID_EMPTY));
 
     // 빈값 체크
-    if (!deadline) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-    if (!title) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-    if (!startDate) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-    if (!endDate) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-    if (!content) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    if (!deadline) return res.send(response(baseResponse.DEADLINE_EMPTY));
+    if (!title) return res.send(response(baseResponse.TITLE_EMPTY));
+    if (!startDate) return res.send(response(baseResponse.START_DATE_EMPTY));
+    if (!endDate) return res.send(response(baseResponse.END_DATE_EMPTY));
+    if (!content) return res.send(response(baseResponse.CONTENT_EMPTY));
+    if (!position) return res.send(response(baseResponse.POSITION_EMPTY));
 
     // 이미지 확인
     if (req.file !== undefined)
