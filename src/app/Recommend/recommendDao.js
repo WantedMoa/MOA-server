@@ -12,7 +12,7 @@ async function selectRecruit(connection, userIdx) {
 // 팀원 추천
 async function selectUser(connection, recruitIdx) {
   const selectUserListQuery = `
-        SELECT User.userIdx, User.profileImg FROM User
+        SELECT User.userIdx, User.profileImg, User.name FROM User
         WHERE User.positionIdx IN (SELECT positionIdx FROM recruitposition WHERE recruitIdx = ?) AND
               User.rating >= 2 AND NOT User.userIdx = (SELECT userIdx FROM recruit WHERE recruitIdx = ?)
                 AND NOT User.userIdx IN (SELECT userIdx FROM Team WHERE recruitIdx = ?) LIMIT 20;
