@@ -1,7 +1,7 @@
 // 내가 등록한 공고 조회
 async function selectProfile(connection, userIdx) {
   const selectProfileListQuery = `
-        SELECT profileImg, name, email, rating, portfolio, experiance, bio FROM User
+        SELECT profileImg, name, email, u.universityName, rating, portfolio, experiance, bio FROM User
         JOIN university u on user.universityIdx = u.universityIdx
         WHERE user.userIdx = ?;
                 `;
