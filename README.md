@@ -1,6 +1,8 @@
 # MOA <img src="https://user-images.githubusercontent.com/46320067/143690522-d5b3efd1-947a-4c2d-bdc4-dbabe955be69.png" height="35">
 IT 공모전을 준비하는 모든 대학생들을 위한 팀빌딩 플랫폼, **모아**
 
+원티드에서 주최하는 채용연계형 해커톤, 해커리어에 참가하면서 기획&개발한 프로젝트입니다. IT 관련직무를 희망하는 대학생들을 위해 IT 공모전 팀빌딩을 도와주는 앱 서비스입니다. 대학 메일 인증, 인기팀원 추천, 내가 올린 팀원 모집공고에 맞는 팀원 추천을 제공, 팀원 리뷰 기능을 제공합니다. 
+
 <br>
 
 ## Project Development Environment
